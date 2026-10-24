@@ -110,7 +110,9 @@ at the bottom of the management panel reappears.
 
 ## Installation
 
-Artifact: `build/dsh-sidebar-entry-manager-1.1.0.tgz` (npm pack format, 8 files inside).
+Artifact: `build/dsh-sidebar-entry-manager-1.1.0.tgz` (npm pack format, 10 files inside).
+
+The same tarball is attached to the [v1.1.0 Release](https://github.com/yanli-nyan/dsh-sidebar-entry-manager/releases/tag/v1.1.0).
 
 > `build/` is the packaging output directory and is ignored by `.gitignore`. If you only have the source,
 > run `npm pack --pack-destination build` in the repository root to regenerate it.

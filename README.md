@@ -94,7 +94,9 @@ localStorage  ←→  模块内 snapshot  ──下发──>  宿主 setPinned(
 
 ## 安装
 
-产物：`build/dsh-sidebar-entry-manager-1.1.0.tgz`（npm pack 格式，包内只含运行所需的 8 个文件）。
+产物：`build/dsh-sidebar-entry-manager-1.1.0.tgz`（npm pack 格式，包内只含运行所需文件，不含 `build/` 与 `docs/`）。
+
+也可以直接从 GitHub Release 下载同一个 tgz：[v1.1.0 Release](https://github.com/yanli-nyan/dsh-sidebar-entry-manager/releases/tag/v1.1.0)。
 
 > **从 1.0.0 升级时**：先把已装的 1.0.0 移除（插件页移除，或删掉 `dependencies` 那行 + `bundles` 里那项），
 > 再按下面任一方式装 1.1.0 并重启。不要两个版本同时留在 `bundles` 里。
@@ -185,7 +187,7 @@ localStorage.removeItem('dsh-sidebar-entry-manager:prefs')
 | `cordis.patch.yml` | 把本包挂进 Web 插件名册（`insert: sidebar-entry-manager`） |
 | `locale/zh.json`、`locale/en.json` | 插件管理页显示名与说明 |
 | `icon.svg` | 插件图标（96×96，包内） |
-| `README.md` | 本文件 |
+| `README.md` / `README.en.md` | 中文 / 英文说明（均随包发布） |
 
 ### 注册的座位
 
