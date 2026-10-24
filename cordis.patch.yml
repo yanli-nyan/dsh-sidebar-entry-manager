@@ -1,0 +1,5 @@
+# dsh-sidebar-entry-manager bundle patch: 把本包的 dsh.client 入口挂进 Web 插件名册。
+# 官方 dsh 插件形态，安装与卸载见同目录 README.md。
+- insert:
+    - id: sidebar-entry-manager
+      name: '@local/dsh-sidebar-entry-manager'

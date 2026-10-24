@@ -1,0 +1,52 @@
+{
+  "name": "@local/dsh-sidebar-entry-manager",
+  "version": "1.1.0",
+  "private": true,
+  "icon": "./icon.svg",
+  "type": "module",
+  "description": "管理 DeepSeek Harness 左侧栏的面板入口行：隐藏不常用的行、从「更多」菜单打开全部入口，偏好本地持久化。",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "yanli-nyan",
+    "url": "https://github.com/yanli-nyan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanli-nyan/dsh-sidebar-entry-manager.git"
+  },
+  "homepage": "https://github.com/yanli-nyan/dsh-sidebar-entry-manager#readme",
+  "bugs": {
+    "url": "https://github.com/yanli-nyan/dsh-sidebar-entry-manager/issues"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "sidebar"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  }
+}

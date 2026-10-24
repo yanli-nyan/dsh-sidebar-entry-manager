@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="Sidebar entry visibility">
+  <defs>
+    <linearGradient id="dsemBg" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1b2436"/>
+      <stop offset="100%" stop-color="#0e1524"/>
+    </linearGradient>
+    <linearGradient id="dsemAccent" x1="24" y1="24" x2="72" y2="72" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#4f8cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="22" fill="url(#dsemBg)"/>
+  <rect x="4.5" y="4.5" width="87" height="87" rx="19" fill="none" stroke="#7dd3fc" stroke-width="1.4" opacity="0.3"/>
+  <rect x="20" y="20" width="18" height="56" rx="5" fill="url(#dsemAccent)" opacity="0.9"/>
+  <rect x="27" y="28" width="4" height="4" rx="2" fill="#0e1524"/>
+  <rect x="27" y="38" width="4" height="4" rx="2" fill="#0e1524" opacity="0.55"/>
+  <rect x="46" y="26" width="30" height="10" rx="5" fill="url(#dsemAccent)"/>
+  <rect x="46" y="43" width="30" height="10" rx="5" fill="none" stroke="#7dd3fc" stroke-width="1.6" stroke-dasharray="4 3.5" opacity="0.8"/>
+  <rect x="46" y="60" width="30" height="10" rx="5" fill="none" stroke="#7dd3fc" stroke-width="1.6" stroke-dasharray="4 3.5" opacity="0.45"/>
+</svg>

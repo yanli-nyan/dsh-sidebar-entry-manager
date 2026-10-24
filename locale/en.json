@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Sidebar Entry Visibility",
+    "description": "Manage the panel entry rows in the left sidebar: hide the ones you rarely use, keep every hidden entry reachable from the More menu, and persist the preference locally."
+  }
+}

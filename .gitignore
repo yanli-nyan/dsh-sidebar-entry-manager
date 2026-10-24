@@ -1,0 +1,17 @@
+# 打包产物目录：`npm pack` / `pnpm pack` 的输出，不入库
+# （需要分发包请从 GitHub Release 下载，或自己重新打包）
+build/
+*.tar.gz
+
+# 依赖
+node_modules/
+
+# 日志与临时文件
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
