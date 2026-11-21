@@ -1,10 +1,10 @@
 {
   "name": "@local/dsh-sidebar-entry-manager",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "icon": "./icon.svg",
   "type": "module",
-  "description": "管理 DeepSeek Harness 左侧栏的面板入口行：隐藏不常用的行、从「更多」菜单打开全部入口，偏好本地持久化。",
+  "description": "管理 DeepSeek Harness 左侧栏的面板入口行：隐藏不常用的行，随时可在管理面板里重新打开；「更多」菜单只保留进入管理面板的捷径，偏好本地持久化。",
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",

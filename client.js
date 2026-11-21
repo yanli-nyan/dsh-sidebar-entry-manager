@@ -17,7 +17,7 @@
 //  2) 偏好真相源是 localStorage，键 dsh-sidebar-entry-manager:prefs，形如 {"schedules": false}。
 //  3) 对账（reconcile）优先走 sidebar 座位 injectProps 里的 setPinned + hooks.entryPins，
 //     拿不到时退回「更多」菜单下发的 onPinnedChange；两条路都是宿主内部已有的公开下发点。
-//  4) 在「更多」菜单里把 entries 渲染成可点行，被藏掉的入口仍能从这里打开。
+//  4) 「更多」菜单里不再列出面板入口清单，只保留一条「管理左侧栏入口…」，直接跳到管理面板。
 window.__ModuleLoader__.load({
   id: '@local/dsh-sidebar-entry-manager',
   factory(require) {
@@ -40,17 +40,15 @@ window.__ModuleLoader__.load({
       zh: {
         "panel.label": "左侧栏入口",
         "panel.title": "左侧栏入口显示",
-        "panel.desc": "决定哪些面板入口出现在左侧栏主排。关掉的入口不会消失，仍可从「更多」菜单打开。",
+        "panel.desc": "决定哪些面板入口出现在左侧栏主排。关掉的入口不会消失，随时可以回到这里重新打开。",
         "panel.always": "始终显示",
         "panel.switchOn": "显示中",
         "panel.switchOff": "已隐藏",
         "panel.reset": "全部显示",
-        "panel.footerHint": "偏好保存在本机浏览器，切换后立即生效。",
+        "panel.footerHint": "偏好保存在本机浏览器，切换后立即生效；关掉的入口随时可以回到这里重新打开。",
         "panel.empty": "当前没有可管理的入口。",
         "panel.pending": "宿主侧栏还没就绪，切换开关后会在侧栏出现时生效。",
         "panel.note": "「插件」行与「更多」按钮由宿主固定显示，本插件无法隐藏它们；这是宿主硬编码的行为，不是本插件的开关能控制的部分。",
-        "menu.section": "面板入口",
-        "menu.hidden": "已隐藏",
         "menu.manage": "管理左侧栏入口…",
         "settings.label": "左侧栏入口",
         "settings.hint": "与左侧栏面板里的设置共用同一份偏好。"
@@ -58,17 +56,15 @@ window.__ModuleLoader__.load({
       en: {
         "panel.label": "Sidebar entries",
         "panel.title": "Sidebar entry visibility",
-        "panel.desc": "Choose which panel entries appear in the sidebar column. Hidden entries stay reachable from the More menu.",
+        "panel.desc": "Choose which panel entries appear in the sidebar column. Hidden entries never disappear — reopen them here whenever you like.",
         "panel.always": "Always shown",
         "panel.switchOn": "Shown",
         "panel.switchOff": "Hidden",
         "panel.reset": "Show all",
-        "panel.footerHint": "Saved in this browser and applied immediately.",
+        "panel.footerHint": "Saved in this browser and applied immediately. Turn a hidden entry back on here at any time.",
         "panel.empty": "There are no entries to manage right now.",
         "panel.pending": "The sidebar is not ready yet. Your choice applies as soon as it appears.",
         "panel.note": "The Plugins row and the More button are hard-coded by the host and cannot be hidden. This plugin only manages the rows in between.",
-        "menu.section": "Panel entries",
-        "menu.hidden": "Hidden",
         "menu.manage": "Manage sidebar entries…",
         "settings.label": "Sidebar entries",
         "settings.hint": "Shares the same preferences as the sidebar panel."
@@ -99,15 +95,10 @@ window.__ModuleLoader__.load({
       ".dsem_footerHint{font-size:12px;line-height:1.5;color:var(--dsw-alias-label-secondary)}",
       ".dsem_note{margin:0;font-size:12px;line-height:1.6;color:var(--dsw-alias-label-secondary)}",
       ".dsem_menu{display:flex;flex-direction:column;gap:2px;min-width:200px;max-width:280px}",
-      ".dsem_menuSection{display:flex;flex-direction:column;gap:2px;min-width:0}",
-      ".dsem_menuSection + .dsem_menuSection{margin-top:6px;padding-top:6px;border-top:0.5px solid var(--dsw-alias-border-l2)}",
-      ".dsem_menuHeading{font-size:11px;line-height:1.4;padding:4px 10px;color:var(--dsw-alias-label-tertiary,var(--dsw-alias-label-secondary))}",
       ".dsem_menuItem{display:flex;align-items:center;gap:8px;width:100%;padding:6px 10px;border:0;border-radius:var(--dsw-radius-sm,8px);background:transparent;color:var(--dsw-alias-label-primary);font:inherit;font-size:13px;line-height:1.4;text-align:left;cursor:pointer}",
       ".dsem_menuItem:hover{background:var(--dsw-alias-bg-layer-3,var(--dsw-alias-bg-layer-2))}",
       ".dsem_menuItem:focus-visible{outline:none;background:var(--dsw-alias-bg-layer-3,var(--dsw-alias-bg-layer-2))}",
-      ".dsem_menuItem.is-active{color:var(--dsw-alias-state-business-primary,#4f8cff)}",
       ".dsem_menuLabel{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
-      ".dsem_menuTag{flex:0 0 auto;font-size:11px;color:var(--dsw-alias-label-tertiary,var(--dsw-alias-label-secondary))}",
     ].join('\n');
     // ------------------------------------------------------------------
     // 偏好存储：localStorage 是唯一真相源；内存 snapshot 让 React 同步读。
@@ -469,46 +460,28 @@ window.__ModuleLoader__.load({
     }
 
     // ------------------------------------------------------------------
-    // 「更多」菜单内容：入口列表 + 对账 + 管理入口
+    // 「更多」菜单内容：只留一条「管理左侧栏入口…」+ 兜底对账
     // ------------------------------------------------------------------
     function makeMenuContent(ctx, t) {
-      return function SidebarEntryMenu({ entries, onOpen, onPinnedChange, onDismiss }) {
+      return function SidebarEntryMenu({ entries, onPinnedChange, onDismiss }) {
+        // 菜单里不再列面板入口，但 ownerProps 里的 onPinnedChange 是宿主的 setPinned，
+        // 作为启动期通道失手时的兜底：挂载后补抓一次，并按宿主真值对账。
         if (typeof onPinnedChange === 'function') pinnedChannel = onPinnedChange;
-        const preferences = usePreferences();
         const signature = JSON.stringify((entries || []).map((entry) => [entry && entry.id, !!(entry && entry.pinned)]));
 
         React.useEffect(() => {
+          // 放在 effect 里：对账会写宿主 store，渲染期调用会触发 React 的跨组件更新警告。
           reconcileEntries(entries);
         }, [signature]);
 
-        const open = (id) => {
-          if (typeof onDismiss === 'function') onDismiss();
-          if (typeof onOpen === 'function') onOpen(id);
-        };
         const manage = () => {
           if (typeof onDismiss === 'function') onDismiss();
           ctx.layout.selectPanel(PANEL_ID);
         };
 
-        const list = Array.isArray(entries) ? entries : [];
         return h('div', { className: 'dsem_menu' },
-          h('div', { className: 'dsem_menuSection' },
-            h('div', { className: 'dsem_menuHeading' }, t('menu.section')),
-            list.map((entry) => {
-              const id = entry.id;
-              const hidden = preferences[id] === false;
-              return h('button', {
-                key: id,
-                type: 'button',
-                className: 'dsem_menuItem' + (entry.active ? ' is-active' : ''),
-                onClick: () => open(id),
-              },
-              h('span', { className: 'dsem_menuLabel' }, entry.label || id),
-              hidden ? h('span', { className: 'dsem_menuTag' }, t('menu.hidden')) : null);
-            })),
-          h('div', { className: 'dsem_menuSection' },
-            h('button', { type: 'button', className: 'dsem_menuItem', onClick: manage },
-              h('span', { className: 'dsem_menuLabel' }, t('menu.manage')))));
+          h('button', { type: 'button', className: 'dsem_menuItem', onClick: manage },
+            h('span', { className: 'dsem_menuLabel' }, t('menu.manage'))));
       };
     }
 
@@ -546,7 +519,8 @@ window.__ModuleLoader__.load({
         locale: NS,
       }, PanelBody));
 
-      // 「更多」菜单：既是隐藏入口的出口，也是唯一能拿到宿主 setPinned 的位置。
+      // 「更多」菜单：只放一条「管理左侧栏入口…」，同时兜底拿宿主 setPinned。
+      // 注意这个注册会让宿主的「更多」按钮出现，这是宿主对 actions 座位长度的硬编码。
       ctx.slots.inject('sidebar.panellist.actions', () => ctx.slots.register({
         name: 'sidebar.panellist.actions',
         id: PANEL_ID,
